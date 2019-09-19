@@ -11,8 +11,9 @@ public class GoogleTest {
 		driver.get("http://www.google.cl");
 		sH.maximizeWindow(driver);
 		sH.writeText(sH.lookObjectByName(driver, "q"), "falabella");
+		sH.takeScreenShot(driver,"google", true);
 		sH.writeText(sH.lookObjectByName(driver, "q"), Keys.RETURN);
-		sH.clickObject(sH.lookObjectByXpath(driver, "//*[@id=\"rso\"]/div[1]/div/div/div/div/div[1]/a/h3/div"));
+		sH.clickObject(sH.lookObjectsByClass(driver, "ellip").get(0));
 	}
 
 }

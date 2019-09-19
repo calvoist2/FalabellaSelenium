@@ -1,10 +1,19 @@
 package controller;
 
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,6 +32,7 @@ public class SeleniumHandler {
 	
 	
 	public WebDriver setIE(WebDriver driver) {
+		System.setProperty("webdriver.ie.driver",System.getProperty("user.dir")+ "/drivers/ieDriver/IEDriverServer.exe");
 		driver= new InternetExplorerDriver();
 		return driver;
 		
@@ -52,6 +62,24 @@ public class SeleniumHandler {
 		return driver.findElement(By.xpath(xpath));
 	}
 	
+	public List<WebElement>lookObjectsByName(WebDriver driver,String name) {
+		return driver.findElements(By.name(name));
+	}
+	public List<WebElement> lookObjectsByClass(WebDriver driver,String className) {
+		return driver.findElements(By.className(className));
+	}
+	public List<WebElement> lookObjectsById(WebDriver driver,String id) {
+		return driver.findElements(By.id(id));
+	}
+	public List<WebElement> lookObjectsByLinkText(WebDriver driver,String text) {
+		return driver.findElements(By.linkText(text));
+	}
+	public List<WebElement> lookObjectsByXpath(WebDriver driver,String xpath) {
+		return driver.findElements(By.xpath(xpath));
+	}
+	
+	
+	
 	public String getURL(WebDriver driver) {
 		return driver.getCurrentUrl();
 	}
@@ -74,8 +102,49 @@ public class SeleniumHandler {
 		return element.findElements(By.tagName(tagName));
 	}
 	
+	public List<WebElement> getChildrenByClassName(WebElement element,String className){
+		return element.findElements(By.className(className));
+	}
+	public boolean elementExists(WebElement element) {
+		if(element==null) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void writeText(WebElement element,Keys key ) {
 		element.sendKeys(key);
+	}
+	
+	public void takeScreenShot(WebDriver driver,String name,boolean passed) {
+		
+		try {
+			String localPassed="";
+			if(passed) {
+				
+				localPassed="Correcto";
+			}
+			else {
+				localPassed="Incorrecto";
+			}
+			
+			 Thread.sleep(1000);
+	         Robot robot = new Robot();
+	         String fileName = System.getProperty("user.dir")+"/reporte/"+localPassed+name+".jpg";
+	 
+	         Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit()
+	                                     .getScreenSize());
+	         BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+	         ImageIO.write(screenFullImage, "jpg", new File(fileName));
+		}catch(Exception e) {
+			System.out.println("Error");
+		}
+		
+		
+	}
+	
+	public void close(WebDriver driver) {
+		driver.close();
 	}
 
 
