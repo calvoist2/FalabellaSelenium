@@ -18,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumHandler {
 	
@@ -116,7 +118,7 @@ public class SeleniumHandler {
 		element.sendKeys(key);
 	}
 	
-	public void takeScreenShot(WebDriver driver,String name,boolean passed) {
+	public void takeScreenShot(WebDriver driver,String name,String path,boolean passed) {
 		
 		try {
 			String localPassed="";
@@ -130,7 +132,7 @@ public class SeleniumHandler {
 			
 			 Thread.sleep(1000);
 	         Robot robot = new Robot();
-	         String fileName = System.getProperty("user.dir")+"/reporte/"+localPassed+name+".jpg";
+	         String fileName =path+"/"+localPassed+name+".jpg";
 	 
 	         Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit()
 	                                     .getScreenSize());
@@ -141,6 +143,12 @@ public class SeleniumHandler {
 		}
 		
 		
+	}
+	
+	public void waitForElementByClassName(WebDriver driver, String className) {
+		
+		WebElement myDynamicElement = (new WebDriverWait(driver, 10))
+				  .until(ExpectedConditions.presenceOfElementLocated(By.className(className)));
 	}
 	
 	public void close(WebDriver driver) {

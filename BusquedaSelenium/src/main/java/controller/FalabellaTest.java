@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 public class FalabellaTest {
 	SeleniumHandler sH= new SeleniumHandler();
 	
-	public void falabellaSearch(WebDriver driver, String object) {
+	public void falabellaSearch(WebDriver driver, String object,String path) {
 		
 		if(!sH.getURL(driver).equals("https://www.falabella.com/falabella-cl/")) {
 			sH.clickObject(sH.lookObjectByXpath(driver, "//*[@id=\"header\"]/nav/div[3]/div/div/a/i[2]"));
@@ -13,25 +13,24 @@ public class FalabellaTest {
 		}
 		sH.waitForURL(driver, "https://www.falabella.com/falabella-cl/");
 		sH.writeText(sH.lookObjectById(driver, "searchQuestionSolr"), object);
-		sH.takeScreenShot(driver,"UrlFalabellaChile", true);
+		sH.takeScreenShot(driver,"UrlFalabellaChile", path,true);
 		
 	}
 	
-	public boolean chooseObject(WebDriver driver) {
+	public boolean chooseObject(WebDriver driver,String path) {
 		sH.clickObject(sH.lookObjectByXpath(driver, "//*[@id=\"searchFormSolr\"]/a/i"));
 		if(!sH.lookObjectsById(driver, "testId-searchResults-products").isEmpty()) {
 			sH.clickObject(sH.getChildrenByClassName(sH.lookObjectById(driver, "testId-searchResults-products"), "jsx-1395131234").get(1));
-			sH.takeScreenShot(driver,"Resultados_encontrados", true);
+			sH.takeScreenShot(driver,"Resultados_encontrados", path,true);
 			return true;
 		}
 		else {
-			sH.takeScreenShot(driver,"Resultados_no_encontrados", false);
-			System.out.println("No se encuentran resultados para el producto");
+			sH.takeScreenShot(driver,"Resultados_no_encontrados",path, false);
 			return false;
 		}
 	}
 	
-	public void addObjectToCar(WebDriver driver) {
+	public void addObjectToCar(WebDriver driver, String path) {
 		if(sH.getChildrenByTagName(sH.lookObjectByXpath(driver, "//*[@id=\"fbra_browseMainProduct\"]/div/div/div[2]/div/div[5]"), "div").size()>0) {
 			
 			if(sH.lookObjectsByClass(driver, "fb-product-cta__size").size()>0) {
@@ -48,7 +47,8 @@ public class FalabellaTest {
 		}
 		
 		sH.clickObject(sH.lookObjectByClass(driver, "fb-product-cta__controls--actions--choose"));
-		
+		sH.waitForElementByClassName(driver, "icon-circle-check");
+		sH.takeScreenShot(driver,"Objeto agregado al carrito",path,true);
 		
 	}
 
